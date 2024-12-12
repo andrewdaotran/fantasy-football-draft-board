@@ -1,5 +1,6 @@
-import { auth } from "auth";
+import Link from "next/link";
 import React from "react";
+import { auth } from "~/server/auth";
 
 const Home = async () => {
   // const data = fetch("https://api.sleeper.app/v1/players/nfl");
@@ -15,10 +16,10 @@ const Home = async () => {
         {session && session?.user ? (
           <div>
             <p>Logged in as {session.user.name}</p>
-            <a href="/api/auth/signout">Sign out</a>
+            <Link href="/api/auth/signout">Sign out</Link>
           </div>
         ) : (
-          <a href="/api/auth/signin">Sign in</a>
+          <Link href="/api/auth/signin">Sign in</Link>
         )}
       </div>
     </div>
