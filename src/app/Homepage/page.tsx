@@ -2,14 +2,37 @@ import Link from "next/link";
 import React from "react";
 import { auth, signOut, signIn } from "~/server/auth";
 
+const getData = async () => {
+  const data = await fetch("https://api.sleeper.app/v1/players/nfl");
+
+  return data.json();
+
+  // return Object.entries(data);
+};
+
 const Home = async () => {
-  // const data = fetch("https://api.sleeper.app/v1/players/nfl");
+  const apiData = await getData();
+  const dataArray = Object.entries(apiData);
+
+  console.log(dataArray[0]);
 
   const session = await auth();
   return (
     <div>
       <h1>Home</h1>
-      {/* <p>{data}</p> */}
+      <div>
+        {dataArray.map((player) => {
+          return (
+            <div key={player[0]}>
+              <p>{player[1].full_name}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      <div>
+        <p></p>
+      </div>
 
       {/* Auth temp 1:20:16 in JS Mastery Next.js 15 Crash Course*/}
       <div>
@@ -32,7 +55,7 @@ const Home = async () => {
 
             {/* <Link href="/">Sign out</Link> */}
 
-            <Link href={`/user/${session?.id}`}>
+            <Link href={`/user/${session?.user?.id}`}>
               <span>{session?.user?.name}</span>
             </Link>
           </div>
