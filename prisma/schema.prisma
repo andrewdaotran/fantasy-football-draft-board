@@ -73,3 +73,57 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+model Player {
+    injury_status          Boolean
+    sport                  String
+    team                   String
+    fantasy_data_id        Int
+    years_exp              Int
+    active                 Boolean
+    depth_chart_order      Int
+    search_last_name       String
+    swish_id               Int
+    college                String
+    competitions           Int[]
+    oddsjam_id             Int
+    player_id              Int      @unique
+    rotowire_id            Int
+    team_abbr              String
+    weight                 String
+    gsis_id                String
+    injury_start_date      String
+    status                 String
+    stats_id               Int
+    age                    Int
+    fantasy_positions      String[]
+    depth_chart_position   String
+    birth_state            String
+    full_name              String
+    // metadata Object
+    rotoworld_id           Int
+    espn_id                Int
+    practice_description   String
+    news_updated           String
+    pandascore_id          Int
+    first_name             String
+    birth_country          String
+    hashtag                String
+    team_changed_at        String
+    birth_city             String
+    birth_date             String
+    last_name              String
+    search_full_name       String
+    opta_id                Int
+    sportradar_id          String
+    high_school            String
+    position               String
+    search_rank            Int
+    injury_notes           String
+    yahoo_id               Int
+    practice_participation String
+    number                 Int
+    height                 String
+    search_first_name      String
+    injury_body_part       String
+}
