@@ -1,4 +1,4 @@
-import { APITypes } from "apiTypes";
+import { APITypes } from "typings";
 import { z } from "zod";
 
 import {
@@ -9,7 +9,9 @@ import {
 
 export const sleeperApiRouter = createTRPCRouter({
   getAllPlayers: publicProcedure.query(async ({ ctx }) => {
-    const players = await fetch("https://api.sleeper.app/v1/players/nfl");
+    const players = await fetch("https://api.sleeper.app/v1/players/nfl", {
+      next: { revalidate: 60 * 60 * 24 },
+    });
     const playersObj = (await players.json()) as Promise<
       Record<string, APITypes>
     >;

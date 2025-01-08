@@ -1,3 +1,7 @@
+import { ReactNode } from "react";
+
+export type ChildrenNodeType = { children: ReactNode };
+
 export interface APITypes {
   injury_status: boolean;
   sport: String;
@@ -50,4 +54,9 @@ export interface APITypes {
   height: String;
   search_first_name: String;
   injury_body_part: String;
+}
+
+export interface PlayerSearch {
+  playerName: String;
+  playerPosition: String;
 }

@@ -85,9 +85,9 @@ model Player {
     search_last_name       String
     swish_id               Int
     college                String
-    competitions           Int[]
+    // competitions           Int[]
     oddsjam_id             Int
-    player_id              Int      @unique
+    player_id              Int     @unique
     rotowire_id            Int
     team_abbr              String
     weight                 String
@@ -96,7 +96,7 @@ model Player {
     status                 String
     stats_id               Int
     age                    Int
-    fantasy_positions      String[]
+    // fantasy_positions      String[]
     depth_chart_position   String
     birth_state            String
     full_name              String

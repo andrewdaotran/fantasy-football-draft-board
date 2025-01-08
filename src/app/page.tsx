@@ -13,5 +13,4 @@ export default async function Home() {
   // }
 
   return <Homepage />;
-  // return <div>stupid</div>;
 }
