@@ -11,12 +11,13 @@ export const sleeperApiRouter = createTRPCRouter({
   getAllPlayers: publicProcedure.query(async ({ ctx }) => {
     const players = await fetch("https://api.sleeper.app/v1/players/nfl", {
       next: { revalidate: 60 * 60 * 24 },
+      // cache: "force-cache", // Can't cache because larger than 2mb
     });
     const playersObj = (await players.json()) as Promise<
       Record<string, APITypes>
     >;
     const playersArray = Object.values(playersObj);
 
-    return playersArray;
+    return playersArray as APITypes[];
   }),
 });

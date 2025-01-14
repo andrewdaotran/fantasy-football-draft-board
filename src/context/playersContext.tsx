@@ -9,21 +9,20 @@ import { APITypes, ChildrenNodeType, PlayerSearch } from "typings";
 export type PlayersContextType = {
   // players: APITypes[];
   playerSearch: PlayerSearch;
-  handlePlayerSearchPosition: (playerPosition: String) => void;
+  handlePlayerSearchPosition: (playerPosition: string) => void;
 };
 
 const PlayersContext = createContext<PlayersContextType | null>(null);
 
 export const PlayersProvider = ({ children }: ChildrenNodeType) => {
-  // const data = api.sleeperApi.getAllPlayers();
-  // const [players, setPlayers] = useState<APITypes[]>([]);
+  const [players, setPlayers] = useState<APITypes[]>([]);
 
   const [playerSearch, setPlayerSearch] = useState<PlayerSearch>({
     playerName: "",
     playerPosition: "",
   });
 
-  const handlePlayerSearchPosition = (playerPosition: String) => {
+  const handlePlayerSearchPosition = (playerPosition: string) => {
     setPlayerSearch({ ...playerSearch, playerPosition });
   };
 
@@ -43,7 +42,3 @@ export const PlayersProvider = ({ children }: ChildrenNodeType) => {
 };
 
 export default PlayersContext;
-
-export function usePlayersContext() {
-  return useContext(PlayersContext) as PlayersContextType;
-}
