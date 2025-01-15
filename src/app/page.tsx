@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Homepage from "./Homepage/page";
+import Homepage from "./(root)/Homepage/page";
 
 import { LatestPost } from "~/app/_components/post";
 import { auth } from "~/server/auth";

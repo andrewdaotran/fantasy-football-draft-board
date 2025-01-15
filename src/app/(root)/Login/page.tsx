@@ -1,32 +1,9 @@
-// "use client";
-import Link from "next/link";
-import React, { useContext, useState } from "react";
-import { auth, signOut, signIn } from "~/server/auth";
-import { APITypes } from "typings";
-import { api } from "~/trpc/server";
+import React from "react";
 
-import PlayerList from "./PlayerList";
-// import PlayersContext, { PlayersContextType } from "~/context/playersContext";
-
-const getPlayers = async () => {
-  const players = await api.sleeperApi.getAllPlayers();
-
-  return players;
-};
-
-const Home = async () => {
-  const players = await getPlayers();
-
-  // const { playerSearch, handlePlayerSearchPosition } = useContext(
-  //   PlayersContext,
-  // ) as PlayersContextType;
-
-  const session = await auth();
-
+const login = () => {
   return (
     <div>
-      <h1>Home</h1>
-
+      <p> this is the login page</p>
       {/* Auth temp 1:20:16 in JS Mastery Next.js 15 Crash Course*/}
       {/* <div>
         {session && session?.user ? (
@@ -67,14 +44,8 @@ const Home = async () => {
           </div>
         )}
       </div> */}
-
-      <PlayerList players={players} />
-
-      <div>
-        <p></p>
-      </div>
     </div>
   );
 };
 
-export default Home;
+export default login;

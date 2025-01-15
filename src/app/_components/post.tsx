@@ -1,5 +1,9 @@
 "use client";
 
+// 01/14/2025
+// DO NOT DELETE!! USING AS REFERENCE!
+// THIS FILE USES A DIFFERENT api FROM /trpc/react WHILE WE ARE USING api FROM /trpc/server
+
 import { useState } from "react";
 
 import { api } from "~/trpc/react";
