@@ -3,10 +3,14 @@ import { auth, signIn, signOut } from "auth";
 import Link from "next/link";
 // import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
+import { api } from "~/trpc/server";
 
 const Navbar = async () => {
   const session = await auth();
-  console.log("session", session);
+  console.log("session", session?.user);
+
+  // const { mutate: createOrGetUser } = api.user.createOrGetUser()
+
   return (
     <>
       {/* Auth temp 1:20:16 in JS Mastery Next.js 15 Crash Course*/}
@@ -46,7 +50,16 @@ const Navbar = async () => {
                 <form
                   action={async () => {
                     "use server";
-                    await signIn("google", { redirectTo: "/hello" }); //01/14/2025 fix to redirect to user page
+                    const res = await signIn("google", {
+                      /*{ redirectTo: "/hello" }*/
+                    }); //01/14/2025 fix to redirect to user page
+                    // api.user.createOrGetUser({
+                    //   name: session?.user?.name,
+                    //   email: session?.user?.email,
+                    //   image: session?.user?.image,
+                    // });
+                    console.log("res", res);
+                    console.log("NOOOOO");
                   }}
                 >
                   <button type="submit">Sign In</button>
@@ -55,6 +68,22 @@ const Navbar = async () => {
                 {/* <Link href="/startup/create">Sign up</Link> */}
               </>
             )}
+
+            {/* TEMP CREATE USER BUTTON */}
+            {/* <form
+              action={async () => {
+                "use server";
+
+                api.user.createUser({
+                  name: "andrew",
+                  email: "andrew@andrew.com",
+                  image: "",
+                  sub: "1234",
+                });
+              }}
+            >
+              <button type="submit">TEMP</button>
+            </form> */}
           </div>
         </nav>
       </header>
