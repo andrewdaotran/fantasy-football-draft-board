@@ -7,7 +7,7 @@ import { api } from "~/trpc/server";
 
 const Navbar = async () => {
   const session = await auth();
-  console.log("session", session?.user);
+  console.log("session", session);
 
   // const { mutate: createOrGetUser } = api.user.createOrGetUser()
 
@@ -58,8 +58,6 @@ const Navbar = async () => {
                     //   email: session?.user?.email,
                     //   image: session?.user?.image,
                     // });
-                    console.log("res", res);
-                    console.log("NOOOOO");
                   }}
                 >
                   <button type="submit">Sign In</button>
@@ -70,20 +68,6 @@ const Navbar = async () => {
             )}
 
             {/* TEMP CREATE USER BUTTON */}
-            {/* <form
-              action={async () => {
-                "use server";
-
-                api.user.createUser({
-                  name: "andrew",
-                  email: "andrew@andrew.com",
-                  image: "",
-                  sub: "1234",
-                });
-              }}
-            >
-              <button type="submit">TEMP</button>
-            </form> */}
           </div>
         </nav>
       </header>
