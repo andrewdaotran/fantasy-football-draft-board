@@ -54,6 +54,7 @@ export interface APITypes {
   height: String;
   search_first_name: String;
   injury_body_part: String;
+  positionIndex?: Number;
 }
 
 export interface PlayerSearch {

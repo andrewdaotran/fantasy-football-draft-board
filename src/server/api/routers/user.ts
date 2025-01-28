@@ -31,19 +31,19 @@ export const userRouter = createTRPCRouter({
       });
       return newUser;
     }),
-  getUniqueUser: protectedProcedure
+  getUniqueUser: publicProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
       const user = await ctx.db.user.findUnique({
-        where: { sub: input },
+        where: { email: input },
       });
       return user;
     }),
-  deleteUser: protectedProcedure
+  deleteUser: publicProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       const user = await ctx.db.user.delete({
-        where: { id: input },
+        where: { email: input },
       });
       return user;
     }),

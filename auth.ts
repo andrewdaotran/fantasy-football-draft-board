@@ -35,7 +35,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   // },
   callbacks: {
     async signIn({ user, account, profile }) {
-      const existingUser = await api.user.getUniqueUser(String(profile?.sub));
+      const existingUser = await api.user.getUniqueUser(String(user?.email));
+
+      // console.log("user", user);
+      // console.log("account", account);
+      // console.log("profile", profile);
 
       if (!existingUser) {
         const googleUser = api.user.createUser({
@@ -48,9 +52,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return true;
     },
-    // async session({ session, token }) {
-    //   Object.assign(session, { id: token.id });
-    //   return session;
-    // },
+    async session({ session, token }) {
+      Object.assign(session, { id: token.id });
+      return session;
+    },
   },
 });

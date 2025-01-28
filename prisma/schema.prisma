@@ -131,13 +131,14 @@ model Player {
 }
 
 model PlayerLessInfo {
-    player_id    Int         @unique
-    full_name    String
-    first_name   String
-    last_name    String
-    position     String
-    PlayerList   PlayerList? @relation(fields: [playerListId], references: [id])
-    playerListId String?
+    player_id     Int         @unique
+    full_name     String
+    first_name    String
+    last_name     String
+    position      String
+    PlayerList    PlayerList? @relation(fields: [playerListId], references: [id])
+    playerListId  String?
+    positionIndex Int?
 }
 
 model PlayerList {

@@ -5,6 +5,11 @@ import Google from "next-auth/providers/google";
 
 import { db } from "~/server/db";
 
+// From server/api/auth/index.ts
+
+import NextAuth from "next-auth";
+import { cache } from "react";
+
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -47,12 +52,34 @@ export const authConfig = {
   ],
   adapter: PrismaAdapter(db),
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    session: async ({ session, user, token }) =>
+      // {
+      //   if (token.sub && session.user) {
+      //     session.user.id = token.sub;
+      //   }
+      //   if (session.user) {
+      //     session.user.name = token.name;
+      //     session.user.email = token.email as string;
+      //     // session.user.role = token.role;
+      //   }
+      //   return session;
+      // },
+      // }
+      ({
+        ...session,
+        user: {
+          ...session.user,
+          // id: user.id,
+          id: token.sub,
+        },
+      }),
   },
 } satisfies NextAuthConfig;
+
+// From server/api/auth/index.ts
+
+const { auth: uncachedAuth, handlers, signIn, signOut } = NextAuth(authConfig);
+
+const auth = cache(uncachedAuth);
+
+export { auth, handlers, signIn, signOut };

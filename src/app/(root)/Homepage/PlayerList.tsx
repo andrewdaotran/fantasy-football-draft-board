@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { APITypes } from "typings";
-import { filteredPlayers, playerPositions } from "utils";
+import { filterPlayers, playerPositions } from "utils";
+import PlayerCard from "~/app/_components/PlayerCard";
 
 interface PlayerListProps {
   players: APITypes[];
@@ -10,21 +11,61 @@ interface PlayerListProps {
 
 const PlayerList = ({ players }: PlayerListProps) => {
   const [filteredPlayersList, setFilteredPlayersList] = useState<APITypes[]>(
-    filteredPlayers(players),
+    filterPlayers(players),
   );
 
+  const [playerPosition, setPlayerPosition] = useState<string>("Quarterback");
+
   const handleFilterPlayers = () => {
-    setFilteredPlayersList(filteredPlayers(players));
+    if (playerPosition === "Flex") {
+      const flexPlayers = filterPlayers(players, "", "RB")
+        .concat(filterPlayers(players, "", "WR"))
+        .concat(filterPlayers(players, "", "TE"));
+      setFilteredPlayersList(flexPlayers);
+    } else {
+      setFilteredPlayersList(filterPlayers(players));
+    }
   };
 
   const handlePlayerName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilteredPlayersList(filteredPlayers(players, e.target.value));
+    setFilteredPlayersList(filterPlayers(players, e.target.value));
   };
 
   const handlePlayerPosition = (e: React.MouseEvent<HTMLButtonElement>) => {
     setFilteredPlayersList(
-      filteredPlayers(players, "", e.currentTarget.textContent!),
+      filterPlayers(players, "", e.currentTarget.textContent!),
     );
+    if (e.currentTarget.textContent === "QB") {
+      setPlayerPosition("Quarterback");
+    }
+    if (e.currentTarget.textContent === "RB") {
+      setPlayerPosition("Runningback");
+    }
+    if (e.currentTarget.textContent === "WR") {
+      setPlayerPosition("Wide Receiver");
+    }
+    if (e.currentTarget.textContent === "TE") {
+      setPlayerPosition("Tight End");
+    }
+    if (e.currentTarget.textContent === "FLEX") {
+      setPlayerPosition("Flex");
+      const flexPlayers = filterPlayers(players, "", "RB")
+        .concat(filterPlayers(players, "", "WR"))
+        .concat(filterPlayers(players, "", "TE"))
+        .sort((a, b) => {
+          if (a.search_rank > b.search_rank) {
+            return 1;
+          }
+          if (a.search_rank < b.search_rank) {
+            return -1;
+          }
+          return 0;
+        });
+      setFilteredPlayersList(flexPlayers);
+    }
+    if (e.currentTarget.textContent === "K") {
+      setPlayerPosition("Kicker");
+    }
   };
 
   return (
@@ -63,12 +104,17 @@ const PlayerList = ({ players }: PlayerListProps) => {
 
       {/* Player List */}
       <div>
-        {filteredPlayersList.map((player) => {
+        {playerPosition}
+        {filteredPlayersList.map((player, index) => {
           return (
             <div key={String(player.player_id)} className="flex gap-2 p-2">
-              <p>{player.full_name}</p>
-              <p>{player.position}</p>
-              <p>{player.search_rank?.toString()}</p>
+              <PlayerCard
+                position={player.position}
+                fullName={player.full_name}
+                playerPosition={playerPosition}
+                positionIndex={Number(player?.positionIndex) + 1}
+                index={index}
+              />
             </div>
           );
         })}

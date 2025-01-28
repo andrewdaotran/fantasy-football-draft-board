@@ -1,7 +1,7 @@
 // "use client";
 import Link from "next/link";
 import React, { useContext, useState } from "react";
-import { auth, signOut, signIn } from "~/server/auth";
+import { auth, signOut, signIn } from "~/server/auth/config";
 import { APITypes } from "typings";
 import { api } from "~/trpc/server";
 

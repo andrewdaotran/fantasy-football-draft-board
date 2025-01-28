@@ -7,7 +7,7 @@ import { api } from "~/trpc/server";
 
 const Navbar = async () => {
   const session = await auth();
-  console.log("session", session);
+  // console.log("session", session);
 
   // const { mutate: createOrGetUser } = api.user.createOrGetUser()
 
@@ -53,11 +53,6 @@ const Navbar = async () => {
                     const res = await signIn("google", {
                       /*{ redirectTo: "/hello" }*/
                     }); //01/14/2025 fix to redirect to user page
-                    // api.user.createOrGetUser({
-                    //   name: session?.user?.name,
-                    //   email: session?.user?.email,
-                    //   image: session?.user?.image,
-                    // });
                   }}
                 >
                   <button type="submit">Sign In</button>
@@ -67,7 +62,19 @@ const Navbar = async () => {
               </>
             )}
 
-            {/* TEMP CREATE USER BUTTON */}
+            {/* TEMP DELETE USER BUTTON */}
+
+            <form
+              action={async () => {
+                "use server";
+
+                const res = await api.user.deleteUser(
+                  String(session?.user?.email),
+                );
+              }}
+            >
+              <button type="submit">Delete</button>
+            </form>
           </div>
         </nav>
       </header>

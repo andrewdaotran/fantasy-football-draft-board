@@ -2,12 +2,12 @@ import { APITypes } from "typings";
 
 export const playerPositions = ["QB", "RB", "WR", "TE", "FLEX", "K", "D/ST"];
 
-export const filteredPlayers = (
+export const filterPlayers = (
   players: APITypes[],
   playerName: string = "",
   filter: string = "QB",
 ) => {
-  return players
+  const filteredPlayers = players
     .filter((player) => {
       const finalFilter = () => {
         if (playerName)
@@ -25,21 +25,21 @@ export const filteredPlayers = (
             player.status === "Active"
           );
 
-        if (filter === "FLEX") {
-          return (
-            (player.position === "RB" ||
-              player.position === "WR" ||
-              player.position === "TE") &&
-            player.depth_chart_order !== null &&
-            player.status === "Active"
-          );
-        } else {
-          return (
-            player.position === filter &&
-            player.depth_chart_order !== null &&
-            player.status === "Active"
-          );
-        }
+        // if (filter === "FLEX") {
+        //   return (
+        //     (player.position === "RB" ||
+        //       player.position === "WR" ||
+        //       player.position === "TE") &&
+        //     player.depth_chart_order !== null &&
+        //     player.status === "Active"
+        //   );
+        // } else {
+        return (
+          player.position === filter &&
+          player.depth_chart_order !== null &&
+          player.status === "Active"
+        );
+        // }
       };
 
       return finalFilter();
@@ -53,4 +53,10 @@ export const filteredPlayers = (
       }
       return 0;
     });
+
+  const indexedFilteredPlayers = filteredPlayers.map((player, index) => {
+    return { ...player, positionIndex: index };
+  });
+
+  return indexedFilteredPlayers;
 };
