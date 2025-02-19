@@ -56,16 +56,17 @@ model Session {
 }
 
 model User {
-    id          String       @id @default(cuid())
-    name        String?
-    email       String?      @unique
+    id                String              @id @default(cuid())
+    name              String?
+    email             String?             @unique
     // emailVerified DateTime?
-    image       String?
-    sub         String?      @unique
-    accounts    Account[]
-    sessions    Session[]
+    image             String?
+    sub               String?             @unique
+    accounts          Account[]
+    sessions          Session[]
     // posts    Post[]
-    playerLists PlayerList[]
+    playerLists       PlayerList[]
+    PositionRanksList PositionRanksList[]
 }
 
 model VerificationToken {
@@ -89,7 +90,7 @@ model Player {
     college                String
     // competitions           Int[]
     oddsjam_id             Int
-    player_id              Int     @unique
+    player_id              Int                @unique
     rotowire_id            Int
     team_abbr              String
     weight                 String
@@ -128,6 +129,8 @@ model Player {
     height                 String
     search_first_name      String
     injury_body_part       String
+    PositionRanksList      PositionRanksList? @relation(fields: [positionRanksListId], references: [id])
+    positionRanksListId    String?
 }
 
 model PlayerLessInfo {
@@ -147,4 +150,11 @@ model PlayerList {
     createdBy      User             @relation(fields: [userId], references: [id])
     userId         String
     type           String
+}
+
+model PositionRanksList {
+    id            String   @id @default(cuid())
+    positionRanks Player[]
+    createdBy     User     @relation(fields: [userId], references: [id])
+    userId        String
 }

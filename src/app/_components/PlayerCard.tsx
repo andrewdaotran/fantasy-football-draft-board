@@ -2,10 +2,10 @@ import React from "react";
 import { APITypes } from "typings";
 
 interface Props {
-  fullName: String;
-  position: String;
-  playerPosition: String;
-  positionIndex?: Number;
+  fullName: string;
+  position: string;
+  playerPosition?: string;
+  positionIndex?: number;
   index: number;
 }
 
