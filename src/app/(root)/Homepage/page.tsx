@@ -4,10 +4,11 @@ import React, { useContext, useState } from "react";
 import { auth, signOut, signIn } from "~/server/auth/config";
 import { APITypes, PositionRanksList } from "typings";
 import { api } from "~/trpc/server";
-import { DndContext, DragEndEvent, useDroppable } from "@dnd-kit/core";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
 
 import PlayerList from "./PlayerList";
 import PositionRanks from "~/app/_components/PositionRanks";
+import TempComponent from "./TempComponent";
 // import PlayersContext, { PlayersContextType } from "~/context/playersContext";
 
 const getPlayers = async () => {
@@ -50,8 +51,8 @@ const Home = async () => {
 
     if (!over) return;
 
-    const taskId = active.id as string;
-    // const newStatus = over.id as Task["status"];
+    const playerId = active.id as string;
+    const newStatus = over.id;
 
     // positionRanks
     console.log(event.active);
@@ -62,17 +63,21 @@ const Home = async () => {
       <h1>Home</h1>
 
       <div className="grid grid-cols-2 gap-2">
+        <TempComponent
+          players={players}
+          positionRanksLists={positionRanksLists}
+        />
         {/* <DndContext onDragEnd={handleDragEnd}> */}
-        {positionRanksLists.map((positionRanksList, index) => {
+        {/* {positionRanksLists.map((positionRanksList, index) => {
           return (
             <PositionRanks
               positionRanks={positionRanksList.positionRanks}
               key={positionRanksList.id}
             />
           );
-        })}
+        })} */}
         {/* <PositionRanks positionRanks={positionRanks} /> */}
-        <PlayerList players={players} />
+        {/* <PlayerList players={players} playerRanksListId={"1"} /> */}
         {/* </DndContext> */}
       </div>
 

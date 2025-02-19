@@ -1,5 +1,7 @@
+"use client";
+
 import React from "react";
-import { APITypes } from "typings";
+import { useDraggable } from "@dnd-kit/core";
 
 interface Props {
   fullName: string;
@@ -7,6 +9,7 @@ interface Props {
   playerPosition?: string;
   positionIndex?: number;
   index: number;
+  playerId: number;
 }
 
 const PlayerCard = ({
@@ -15,9 +18,25 @@ const PlayerCard = ({
   index,
   playerPosition,
   positionIndex,
+  playerId,
 }: Props) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: playerId,
+  });
+
+  const style = transform
+    ? {
+        transform: `translate(${transform.x}px, ${transform.y}px)`,
+      }
+    : undefined;
   return (
-    <div className="flex gap-2 border border-gray-200 p-2">
+    <div
+      className="flex gap-2 border border-gray-200 p-2"
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      style={style}
+    >
       <p>{String(index + 1)} </p>
       <p>{fullName}</p>
       {playerPosition === "Flex" && (

@@ -18,6 +18,7 @@ const PositionRanks = ({ positionRanks }: PositionRanksProps) => {
               // playerPosition={playerPosition}
               positionIndex={Number(player?.positionIndex) + 1}
               index={index}
+              playerId={player.player_id}
             />
           </div>
         );

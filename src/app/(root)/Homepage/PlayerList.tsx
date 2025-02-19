@@ -1,5 +1,6 @@
 "use client";
 
+import { useDroppable } from "@dnd-kit/core";
 import React, { useState } from "react";
 import { APITypes } from "typings";
 import { filterPlayers, playerPositions } from "utils";
@@ -7,9 +8,14 @@ import PlayerCard from "~/app/_components/PlayerCard";
 
 interface PlayerListProps {
   players: APITypes[];
+  playerRanksListId: string;
 }
 
-const PlayerList = ({ players }: PlayerListProps) => {
+const PlayerList = ({ players, playerRanksListId }: PlayerListProps) => {
+  const { setNodeRef } = useDroppable({
+    id: playerRanksListId,
+  });
+
   const [filteredPlayersList, setFilteredPlayersList] = useState<APITypes[]>(
     filterPlayers(players),
   );
@@ -107,13 +113,18 @@ const PlayerList = ({ players }: PlayerListProps) => {
         {playerPosition}
         {filteredPlayersList.map((player, index) => {
           return (
-            <div key={String(player.player_id)} className="flex gap-2 p-2">
+            <div
+              key={String(player.player_id)}
+              className="flex gap-2 p-2"
+              ref={setNodeRef}
+            >
               <PlayerCard
                 position={player.position}
                 fullName={player.full_name}
                 playerPosition={playerPosition}
                 positionIndex={Number(player?.positionIndex) + 1}
                 index={index}
+                playerId={player.player_id}
               />
             </div>
           );
