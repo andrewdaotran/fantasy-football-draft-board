@@ -10,6 +10,7 @@ interface Props {
   positionIndex?: number;
   index: number;
   playerId: number;
+  playerRanksListId?: string;
 }
 
 const PlayerCard = ({
@@ -19,9 +20,18 @@ const PlayerCard = ({
   playerPosition,
   positionIndex,
   playerId,
+  playerRanksListId,
 }: Props) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: playerId,
+    data: {
+      fullName,
+      position,
+      index,
+      playerPosition,
+      positionIndex,
+      playerRanksListId,
+    },
   });
 
   const style = transform

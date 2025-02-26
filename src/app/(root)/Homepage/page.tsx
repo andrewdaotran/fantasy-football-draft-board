@@ -1,14 +1,10 @@
 // "use client";
-import Link from "next/link";
-import React, { useContext, useState } from "react";
-import { auth, signOut, signIn } from "~/server/auth/config";
-import { APITypes, PositionRanksList } from "typings";
+import { auth } from "~/server/auth/config";
+import { PositionRanksList } from "typings";
 import { api } from "~/trpc/server";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
 
-import PlayerList from "./PlayerList";
-import PositionRanks from "~/app/_components/PositionRanks";
-import TempComponent from "./TempComponent";
+import PlayerList from "../../_components/PlayerList";
+import DragAndDrop from "./DragAndDrop";
 // import PlayersContext, { PlayersContextType } from "~/context/playersContext";
 
 const getPlayers = async () => {
@@ -28,15 +24,29 @@ const getPositionRanksListsByUser = async () => {
 const Home = async () => {
   const players = await getPlayers();
 
-  const positionRanksLists = await getPositionRanksListsByUser();
+  const positionRanksArray = await getPositionRanksListsByUser();
 
-  positionRanksLists.push({
-    id: "1",
+  // Temp data until DB is setup
+
+  positionRanksArray.push({
+    id: "0",
     positionRanks: players.slice(0, 12),
     createdBy: "Andrew",
+    // position: "QB",
+    // title: "QB Ranks 2025",
+  });
+
+  positionRanksArray.push({
+    id: "4",
+    positionRanks: players.slice(13, 26),
+    createdBy: "Andrew",
+    // position: "RB",
+    // title: "RB Ranks 2025",
   });
 
   const positionRanks = players.slice(0, 10);
+
+  // Temp data until DB is setup end
 
   // const { playerSearch, handlePlayerSearchPosition } = useContext(
   //   PlayersContext,
@@ -44,45 +54,15 @@ const Home = async () => {
 
   const session = await auth();
 
-  // useDroppable({});
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (!over) return;
-
-    const playerId = active.id as string;
-    const newStatus = over.id;
-
-    // positionRanks
-    console.log(event.active);
-  };
-
   return (
     <div>
       <h1>Home</h1>
 
       <div className="grid grid-cols-2 gap-2">
-        <TempComponent
+        <DragAndDrop
           players={players}
-          positionRanksLists={positionRanksLists}
+          positionRanksArray={positionRanksArray}
         />
-        {/* <DndContext onDragEnd={handleDragEnd}> */}
-        {/* {positionRanksLists.map((positionRanksList, index) => {
-          return (
-            <PositionRanks
-              positionRanks={positionRanksList.positionRanks}
-              key={positionRanksList.id}
-            />
-          );
-        })} */}
-        {/* <PositionRanks positionRanks={positionRanks} /> */}
-        {/* <PlayerList players={players} playerRanksListId={"1"} /> */}
-        {/* </DndContext> */}
-      </div>
-
-      <div>
-        <p></p>
       </div>
     </div>
   );

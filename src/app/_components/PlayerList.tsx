@@ -109,15 +109,11 @@ const PlayerList = ({ players, playerRanksListId }: PlayerListProps) => {
       </div>
 
       {/* Player List */}
-      <div>
+      <div ref={setNodeRef}>
         {playerPosition}
         {filteredPlayersList.map((player, index) => {
           return (
-            <div
-              key={String(player.player_id)}
-              className="flex gap-2 p-2"
-              ref={setNodeRef}
-            >
+            <div key={String(player.player_id)} className="flex gap-2 p-2">
               <PlayerCard
                 position={player.position}
                 fullName={player.full_name}
@@ -125,6 +121,7 @@ const PlayerList = ({ players, playerRanksListId }: PlayerListProps) => {
                 positionIndex={Number(player?.positionIndex) + 1}
                 index={index}
                 playerId={player.player_id}
+                playerRanksListId={playerRanksListId}
               />
             </div>
           );

@@ -1,14 +1,24 @@
 import React from "react";
 import { APITypes } from "typings";
 import PlayerCard from "./PlayerCard";
+import { useDroppable } from "@dnd-kit/core";
 
 interface PositionRanksProps {
   positionRanks: APITypes[];
+  playerRanksListId: string;
 }
 
-const PositionRanks = ({ positionRanks }: PositionRanksProps) => {
+const PositionRanksByUser = ({
+  positionRanks,
+  playerRanksListId,
+}: PositionRanksProps) => {
+  const { setNodeRef } = useDroppable({
+    id: playerRanksListId,
+    data: { positionRanks },
+  });
   return (
-    <div>
+    // <div>
+    <div ref={setNodeRef}>
       {positionRanks.map((player, index) => {
         return (
           <div key={String(player.player_id)} className="flex gap-2 p-2">
@@ -19,6 +29,7 @@ const PositionRanks = ({ positionRanks }: PositionRanksProps) => {
               positionIndex={Number(player?.positionIndex) + 1}
               index={index}
               playerId={player.player_id}
+              playerRanksListId={playerRanksListId}
             />
           </div>
         );
@@ -27,4 +38,4 @@ const PositionRanks = ({ positionRanks }: PositionRanksProps) => {
   );
 };
 
-export default PositionRanks;
+export default PositionRanksByUser;
