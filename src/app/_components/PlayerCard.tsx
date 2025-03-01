@@ -2,35 +2,33 @@
 
 import React from "react";
 import { useDraggable } from "@dnd-kit/core";
+import { APITypes } from "typings";
 
 interface Props {
-  fullName: string;
+  // fullName: string;
   position: string;
   playerPosition?: string;
   positionIndex?: number;
   index: number;
-  playerId: number;
-  playerRanksListId?: string;
+  // playerId: number;
+  // playerRanksListId?: string;
+  player: APITypes;
 }
 
 const PlayerCard = ({
-  fullName,
+  // fullName,
   position,
   index,
   playerPosition,
   positionIndex,
-  playerId,
-  playerRanksListId,
+  // playerId,
+  // playerRanksListId,
+  player,
 }: Props) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: playerId,
+    id: player.player_id,
     data: {
-      fullName,
-      position,
-      index,
-      playerPosition,
-      positionIndex,
-      playerRanksListId,
+      ...player,
     },
   });
 
@@ -48,7 +46,7 @@ const PlayerCard = ({
       style={style}
     >
       <p>{String(index + 1)} </p>
-      <p>{fullName}</p>
+      <p>{player.full_name}</p>
       {playerPosition === "Flex" && (
         <>
           <p>

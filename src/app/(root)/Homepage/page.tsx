@@ -30,7 +30,7 @@ const Home = async () => {
 
   positionRanksArray.push({
     id: "0",
-    positionRanks: players.slice(0, 12),
+    positionRanks: players.slice(0, 5),
     createdBy: "Andrew",
     // position: "QB",
     // title: "QB Ranks 2025",
@@ -38,7 +38,7 @@ const Home = async () => {
 
   positionRanksArray.push({
     id: "4",
-    positionRanks: players.slice(13, 26),
+    positionRanks: players.slice(13, 17),
     createdBy: "Andrew",
     // position: "RB",
     // title: "RB Ranks 2025",

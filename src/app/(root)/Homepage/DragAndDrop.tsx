@@ -13,8 +13,9 @@ interface Props {
 }
 
 const DragAndDrop = ({ players, positionRanksArray }: Props) => {
-  const [list, setList] = useState<PositionRanksList[]>(positionRanksArray);
-
+  const [listOfPlayers, setListOfPlayers] = useState<APITypes[]>(players);
+  const [ranksArray, setRanksArray] =
+    useState<PositionRanksList[]>(positionRanksArray);
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -22,37 +23,48 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
     // if (!active.data.current) return;
 
     const getListPos = (id: string) => {
-      return list.findIndex((item) => item.id === id);
+      return ranksArray.findIndex((item) => item.id === id);
     };
 
-    const hoveredListID = over.id;
+    const droppedListID = over.id;
 
     // if (over.id === active.data.current.playerRanksListId) return;
 
     const playerId = active.id as string;
     // const newStatus = over.id;
 
-    // setList(() =>
-    //   // const originalPos = getListPos(active.id)
-    //   // const newPos = getListPos(over.id)
-    //   list.map((item) =>
-    //     item.id === hoveredListID
-    //       ? {
-    //           ...item,
-    //           positionRanks: [...item.positionRanks, active.data.current],
-    //         }
-    //       : item,
-    //   ),
-    // );
+    setRanksArray(() => {
+      return ranksArray.map((list) => {
+        console.log("LIST", list);
 
-    // positionRanks
-    console.log(active);
-    console.log(over);
+        if (list.id === droppedListID) {
+          return {
+            ...list,
+            positionRanks: [...list.positionRanks, { ...active.data.current }],
+          };
+        }
+        return list;
+      });
+    });
+
+    // console.log("TYPE", typeof playerId);
+
+    // Try to remove player from list in future
+    setListOfPlayers(() => {
+      return listOfPlayers.filter((player) => {
+        // console.log("PLAYER ID", playerId);
+        // console.log("player.player_id", player.player_id);
+        if (String(player.player_id) === playerId) {
+          console.log("PLAYER", player);
+        }
+        return String(player.player_id) !== playerId;
+      });
+    });
   };
   return (
     <>
       <DndContext onDragEnd={handleDragEnd}>
-        {list.map((positionRanksList, index) => {
+        {ranksArray.map((positionRanksList, index) => {
           return (
             <PositionRanksByUser
               positionRanks={positionRanksList.positionRanks}
@@ -62,7 +74,7 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
           );
         })}
         {/* <PositionRanks positionRanks={positionRanks} /> */}
-        <PlayerList players={players} playerRanksListId={"1"} />
+        <PlayerList players={listOfPlayers} playerRanksListId={"1"} />
       </DndContext>
     </>
   );

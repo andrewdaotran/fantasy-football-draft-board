@@ -1,7 +1,7 @@
 "use client";
 
 import { useDroppable } from "@dnd-kit/core";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { APITypes } from "typings";
 import { filterPlayers, playerPositions } from "utils";
 import PlayerCard from "~/app/_components/PlayerCard";
@@ -19,6 +19,10 @@ const PlayerList = ({ players, playerRanksListId }: PlayerListProps) => {
   const [filteredPlayersList, setFilteredPlayersList] = useState<APITypes[]>(
     filterPlayers(players),
   );
+
+  // useEffect(() => {
+  //   setFilteredPlayersList(filterPlayers(players));
+  // }, [players]);
 
   const [playerPosition, setPlayerPosition] = useState<string>("Quarterback");
 
@@ -116,12 +120,13 @@ const PlayerList = ({ players, playerRanksListId }: PlayerListProps) => {
             <div key={String(player.player_id)} className="flex gap-2 p-2">
               <PlayerCard
                 position={player.position}
-                fullName={player.full_name}
+                // fullName={player.full_name}
                 playerPosition={playerPosition}
                 positionIndex={Number(player?.positionIndex) + 1}
                 index={index}
-                playerId={player.player_id}
-                playerRanksListId={playerRanksListId}
+                // playerId={player.player_id}
+                // playerRanksListId={playerRanksListId}
+                player={player}
               />
             </div>
           );
