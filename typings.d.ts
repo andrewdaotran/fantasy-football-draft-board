@@ -66,4 +66,5 @@ export interface PositionRanksList {
   id: string;
   positionRanks: APITypes | AnyData | undefined[];
   createdBy: string;
+  title: string;
 }

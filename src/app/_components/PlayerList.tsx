@@ -9,9 +9,14 @@ import PlayerCard from "~/app/_components/PlayerCard";
 interface PlayerListProps {
   players: APITypes[];
   playerRanksListId: string;
+  draggedPlayer: string | null;
 }
 
-const PlayerList = ({ players, playerRanksListId }: PlayerListProps) => {
+const PlayerList = ({
+  players,
+  playerRanksListId,
+  draggedPlayer,
+}: PlayerListProps) => {
   const { setNodeRef } = useDroppable({
     id: playerRanksListId,
   });
@@ -77,6 +82,22 @@ const PlayerList = ({ players, playerRanksListId }: PlayerListProps) => {
       setPlayerPosition("Kicker");
     }
   };
+
+  // Remove dragged player from list
+  const handleDraggedPlayer = (draggedPlayer: string | null) => {
+    setFilteredPlayersList(
+      filteredPlayersList.filter(
+        (player) => String(player.player_id) !== draggedPlayer,
+      ),
+    );
+  };
+
+  useEffect(() => {
+    handleDraggedPlayer(draggedPlayer);
+    console.log("DRAGGED PLAYER", draggedPlayer);
+  }, [draggedPlayer]);
+
+  // Remove dragged player from list end
 
   return (
     <div className="">

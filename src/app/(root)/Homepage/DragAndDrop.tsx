@@ -16,6 +16,16 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
   const [listOfPlayers, setListOfPlayers] = useState<APITypes[]>(players);
   const [ranksArray, setRanksArray] =
     useState<PositionRanksList[]>(positionRanksArray);
+  const [activeRanksList, setActiveRanksList] = useState<APITypes[] | null>(
+    ranksArray[0]?.positionRanks,
+  );
+  const [draggedPlayer, setDraggedPlayer] = useState<string | null>(null);
+
+  const handleActiveRanksList = (id: string) => {
+    const activeList = ranksArray.find((list) => list.id === id);
+    setActiveRanksList(activeList?.positionRanks);
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -31,6 +41,7 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
     // if (over.id === active.data.current.playerRanksListId) return;
 
     const playerId = active.id as string;
+    setDraggedPlayer(playerId);
     // const newStatus = over.id;
 
     setRanksArray(() => {
@@ -70,11 +81,18 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
               positionRanks={positionRanksList.positionRanks}
               key={positionRanksList.id}
               playerRanksListId={positionRanksList.id}
+              ranksArray={ranksArray}
+              handleActiveRanksList={handleActiveRanksList}
+              activeRanksList={activeRanksList}
             />
           );
         })}
         {/* <PositionRanks positionRanks={positionRanks} /> */}
-        <PlayerList players={listOfPlayers} playerRanksListId={"1"} />
+        <PlayerList
+          players={listOfPlayers}
+          playerRanksListId={"1"}
+          draggedPlayer={draggedPlayer}
+        />
       </DndContext>
     </>
   );
