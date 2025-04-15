@@ -32,7 +32,7 @@ const Home = async () => {
     id: "0",
     positionRanks: players.slice(0, 5),
     createdBy: "Andrew",
-    // position: "QB",
+    position: "QB",
     title: "QB Ranks 2025",
   });
 
@@ -40,7 +40,7 @@ const Home = async () => {
     id: "4",
     positionRanks: players.slice(13, 17),
     createdBy: "Andrew",
-    // position: "RB",
+    position: "RB",
     title: "RB Ranks 2025",
   });
 

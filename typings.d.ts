@@ -67,4 +67,5 @@ export interface PositionRanksList {
   positionRanks: APITypes[];
   createdBy: string;
   title: string;
+  position: string;
 }
