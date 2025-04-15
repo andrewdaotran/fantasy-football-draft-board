@@ -4,11 +4,12 @@ import PlayerCard from "./PlayerCard";
 import { useDroppable } from "@dnd-kit/core";
 
 interface PositionRanksProps {
-  positionRanks: APITypes[];
+  positionRanks: APITypes[] | null;
+  // playerRanksListId?: string;
   playerRanksListId: string;
   ranksArray: PositionRanksList[];
   handleActiveRanksList: (id: string) => void;
-  activeRanksList: APITypes[] | null;
+  activeRanksList?: PositionRanksList;
 }
 
 const PositionRanksByUser = ({
@@ -20,17 +21,18 @@ const PositionRanksByUser = ({
 }: PositionRanksProps) => {
   const { setNodeRef } = useDroppable({
     id: playerRanksListId,
+    // id: 4,
     data: { positionRanks },
   });
-  const handleChangeList = (listId: string) => {
-    handleActiveRanksList(listId);
-  };
+  // const handleChangeList = (listId: string) => {
+  //   handleActiveRanksList(listId);
+  // };
 
-  console.log("activeRanksList", activeRanksList);
+  // console.log("activeRanksList", activeRanksList?.length);
   return (
     // <div>
     <div ref={setNodeRef}>
-      <div className="dropdown dropdown-hover">
+      {/* <div className="dropdown dropdown-hover">
         <div tabIndex={0} role="button" className="btn">
           Position
         </div>
@@ -50,8 +52,9 @@ const PositionRanksByUser = ({
             );
           })}
         </ul>
-      </div>
-      {activeRanksList?.map((player, index) => {
+      </div> */}
+      {/* {activeRanksList?.positionRanks?.map( */}
+      {positionRanks?.map((player: APITypes, index: number) => {
         return (
           <div key={String(player.player_id)} className="flex gap-2 p-2">
             <PlayerCard

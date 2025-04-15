@@ -64,7 +64,7 @@ export interface PlayerSearch {
 
 export interface PositionRanksList {
   id: string;
-  positionRanks: APITypes | AnyData | undefined[];
+  positionRanks: APITypes | AnyData;
   createdBy: string;
   title: string;
 }
