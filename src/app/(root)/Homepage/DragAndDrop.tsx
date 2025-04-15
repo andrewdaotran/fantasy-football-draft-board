@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { act, useState } from "react";
 import { APITypes, PositionRanksList } from "typings";
 import PlayerList from "../../_components/PlayerList";
 import PositionRanksByUser from "~/app/_components/PositionRanksByUser";
@@ -47,17 +47,35 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
 
     setRanksArray(() => {
       return ranksArray.map((list) => {
-        console.log("LIST", list);
-
         if (list.id === droppedListID) {
           return {
             ...list,
-            positionRanks: [...list.positionRanks, { ...active.data.current }],
+            positionRanks: [
+              ...list.positionRanks,
+              active.data.current as APITypes,
+            ],
+            // positionRanks: list.positionRanks.filter(
+            //   (player) => String(player.player_id) !== playerId,
+            // ),
           };
         }
         return list;
       });
     });
+
+    // setRanksArray(() => {
+    //   return ranksArray.map((list) => {
+    //     console.log("LIST", list);
+
+    //     if (list.id === droppedListID) {
+    //       return {
+    //         ...list,
+    //         positionRanks: [...list.positionRanks, { ...active.data.current }],
+    //       };
+    //     }
+    //     return list;
+    //   });
+    // });
 
     // console.log("TYPE", typeof playerId);
 
