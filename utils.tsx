@@ -60,3 +60,5 @@ export const filterPlayers = (
 
   return indexedFilteredPlayers;
 };
+
+export const playerListID = "PLAYERLIST_ID";

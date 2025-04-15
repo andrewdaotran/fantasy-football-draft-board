@@ -55,6 +55,7 @@ export interface APITypes {
   search_first_name: string;
   injury_body_part: string;
   positionIndex?: number;
+  blocked?: boolean;
 }
 
 export interface PlayerSearch {

@@ -10,12 +10,18 @@ interface PlayerListProps {
   players: APITypes[];
   playerRanksListId: string;
   draggedPlayer: string | null;
+  removedPlayer: string | null;
+  handleSetDraggedPlayer: () => void;
+  handleSetRemovedPlayer: () => void;
 }
 
 const PlayerList = ({
   players,
   playerRanksListId,
   draggedPlayer,
+  removedPlayer,
+  handleSetDraggedPlayer,
+  handleSetRemovedPlayer,
 }: PlayerListProps) => {
   const { setNodeRef } = useDroppable({
     id: playerRanksListId,
@@ -84,19 +90,34 @@ const PlayerList = ({
   };
 
   // Remove dragged player from list
-  const handleDraggedPlayer = (draggedPlayer: string | null) => {
-    setFilteredPlayersList(
-      filteredPlayersList.filter(
-        (player) => String(player.player_id) !== draggedPlayer,
-      ),
-    );
+  const handleDraggedPlayer = (
+    draggedPlayer: string | null,
+    removedPlayer: string | null,
+  ) => {
+    // setFilteredPlayersList(
+    //   filteredPlayersList.filter(
+    //     (player) => String(player.player_id) !== draggedPlayer,
+    //   ),
+    // );
+    console.log("DRAGGED PLAYER", draggedPlayer);
+    console.log("REMOVED PLAYER", removedPlayer);
+    filteredPlayersList.map((player, index) => {
+      if (String(player.player_id) === draggedPlayer) {
+        player.blocked = true;
+        handleSetDraggedPlayer();
+      }
+      if (String(player.player_id) === removedPlayer) {
+        player.blocked = false;
+        handleSetRemovedPlayer();
+      }
+      return player;
+    });
   };
 
   useEffect(() => {
-    handleDraggedPlayer(draggedPlayer);
-    console.log("DRAGGED PLAYER", draggedPlayer);
-  }, [draggedPlayer]);
-
+    handleDraggedPlayer(draggedPlayer, removedPlayer);
+    // console.log("DRAGGED PLAYER", draggedPlayer);
+  }, [draggedPlayer, removedPlayer]);
   // Remove dragged player from list end
 
   return (
@@ -137,6 +158,7 @@ const PlayerList = ({
       <div ref={setNodeRef}>
         {playerPosition}
         {filteredPlayersList.map((player, index) => {
+          if (player.blocked === true) return null;
           return (
             <div key={String(player.player_id)} className="flex gap-2 p-2">
               <PlayerCard

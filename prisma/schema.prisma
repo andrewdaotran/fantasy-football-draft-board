@@ -131,6 +131,7 @@ model Player {
     injury_body_part       String
     PositionRanksList      PositionRanksList? @relation(fields: [positionRanksListId], references: [id])
     positionRanksListId    String?
+    blocked                Boolean            @default(false)
 }
 
 model PlayerLessInfo {
