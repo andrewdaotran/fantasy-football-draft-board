@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { APITypes, PositionRanksList } from "typings";
 import PlayerList from "../../_components/PlayerList";
 import PositionRanksByUser from "~/app/_components/PositionRanksByUser";
@@ -32,6 +32,7 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
 
     let isAdded = false;
     let isRemoved = false;
+    let doesPlayerExist = false;
 
     if (!over) return;
     // if (!active.data.current) return;
@@ -50,12 +51,23 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
     // const newStatus = over.id;
 
     // Adds player to user's ranks list
-    console.log("droppedList", droppedListID);
+
+    ranksArray.map((list) => {
+      if (list.id === active.data.current?.playerRanksListId) return;
+      list.positionRanks.map((player) => {
+        if (String(active.id) === String(player.player_id)) {
+          doesPlayerExist = true;
+        }
+        return player;
+      });
+    });
+
     setRanksArray(() => {
       return ranksArray.map((list) => {
         if (
           list.id === droppedListID &&
-          active.data.current?.position === list.position
+          active.data.current?.position === list.position &&
+          !doesPlayerExist
         ) {
           isAdded = true;
           return {
@@ -65,6 +77,7 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
               active.data.current as APITypes,
             ],
           };
+
           // Adds player to user's ranks list end
           // Removes player from user's ranks list and adds back to player list
         } else if (
@@ -79,6 +92,7 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
             ),
           };
         }
+
         // Removes player from user's ranks list and adds back to player list end
         return list;
       });
@@ -90,7 +104,7 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
         // console.log("PLAYER ID", playerId);
         // console.log("player.player_id", player.player_id);
         if (String(player.player_id) === playerId) {
-          console.log("PLAYER", player);
+          // console.log("PLAYER", player);
         }
         return String(player.player_id) !== playerId;
       });
@@ -112,6 +126,7 @@ const DragAndDrop = ({ players, positionRanksArray }: Props) => {
   const handleChangeList = (listId: string) => {
     handleActiveRanksList(listId);
   };
+
   return (
     <>
       <DndContext onDragEnd={handleDragEnd}>

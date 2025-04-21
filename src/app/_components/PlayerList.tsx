@@ -99,8 +99,8 @@ const PlayerList = ({
     //     (player) => String(player.player_id) !== draggedPlayer,
     //   ),
     // );
-    console.log("DRAGGED PLAYER", draggedPlayer);
-    console.log("REMOVED PLAYER", removedPlayer);
+    // console.log("DRAGGED PLAYER", draggedPlayer);
+    // console.log("REMOVED PLAYER", removedPlayer);
     filteredPlayersList.map((player, index) => {
       if (String(player.player_id) === draggedPlayer) {
         player.blocked = true;
