@@ -2,7 +2,7 @@
 
 import { useDroppable } from "@dnd-kit/core";
 import React, { use, useEffect, useState } from "react";
-import { APITypes } from "typings";
+import { APITypes, PositionRanksList } from "typings";
 import { filterPlayers, playerPositions } from "utils";
 import PlayerCard from "~/app/_components/PlayerCard";
 
@@ -13,6 +13,7 @@ interface PlayerListProps {
   removedPlayer: string | null;
   handleSetDraggedPlayer: () => void;
   handleSetRemovedPlayer: () => void;
+  activeRanksList?: PositionRanksList | undefined;
 }
 
 const PlayerList = ({
@@ -22,20 +23,50 @@ const PlayerList = ({
   removedPlayer,
   handleSetDraggedPlayer,
   handleSetRemovedPlayer,
+  activeRanksList,
 }: PlayerListProps) => {
   const { setNodeRef } = useDroppable({
     id: playerRanksListId,
   });
 
+  // const [filteredPlayersList, setFilteredPlayersList] =
+  //   useState<APITypes[]>(players);
   const [filteredPlayersList, setFilteredPlayersList] = useState<APITypes[]>(
     filterPlayers(players),
   );
+
+  // **** Uncomment***
+  // const [hashedObj, setHashedObj] = useState<{ string: APITypes } | {}>({});
+  // **** Uncomment***
+
+  // console.log("HASHED OBJ", hashedObj);
 
   // useEffect(() => {
   //   setFilteredPlayersList(filterPlayers(players));
   // }, [players]);
 
+  console.log("FILTERED PLAYER LIST", filteredPlayersList);
+
   const [playerPosition, setPlayerPosition] = useState<string>("Quarterback");
+
+  const hashIntoObject = (filteredPlayersList: APITypes[]) => {
+    const hash: { [key: string]: number } = {};
+    filteredPlayersList.forEach((player, index) => {
+      // hash[String(player.player_id)] = index;
+      hash[player.player_id] = index;
+      // hash[player.player_id] = player;
+    });
+    return hash;
+  };
+
+  // const blockPlayerFromList = (ranksList: APITypes[]) => {
+  //   for (const player of ranksList) {
+  //     filteredPlayersList[hashedObj[player.player_id]].blocked = true;
+  //   }
+  //   // filteredPlayersList[]
+  // };
+
+  // blockPlayerFromList(activeRanksList?.positionRanks);
 
   const handleFilterPlayers = () => {
     if (playerPosition === "Flex") {
@@ -52,23 +83,26 @@ const PlayerList = ({
     setFilteredPlayersList(filterPlayers(players, e.target.value));
   };
 
-  const handlePlayerPosition = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePlayerPosition = (
+    e: React.MouseEvent<HTMLButtonElement> | null,
+    position?: string | undefined,
+  ) => {
     setFilteredPlayersList(
-      filterPlayers(players, "", e.currentTarget.textContent!),
+      filterPlayers(players, "", e?.currentTarget.textContent!, position),
     );
-    if (e.currentTarget.textContent === "QB") {
+    if (e?.currentTarget.textContent === "QB" || position === "QB") {
       setPlayerPosition("Quarterback");
     }
-    if (e.currentTarget.textContent === "RB") {
+    if (e?.currentTarget.textContent === "RB" || position === "RB") {
       setPlayerPosition("Runningback");
     }
-    if (e.currentTarget.textContent === "WR") {
+    if (e?.currentTarget.textContent === "WR" || position === "WR") {
       setPlayerPosition("Wide Receiver");
     }
-    if (e.currentTarget.textContent === "TE") {
+    if (e?.currentTarget.textContent === "TE" || position === "TE") {
       setPlayerPosition("Tight End");
     }
-    if (e.currentTarget.textContent === "FLEX") {
+    if (e?.currentTarget.textContent === "FLEX" || position === "FLEX") {
       setPlayerPosition("Flex");
       const flexPlayers = filterPlayers(players, "", "RB")
         .concat(filterPlayers(players, "", "WR"))
@@ -84,7 +118,7 @@ const PlayerList = ({
         });
       setFilteredPlayersList(flexPlayers);
     }
-    if (e.currentTarget.textContent === "K") {
+    if (e?.currentTarget.textContent === "K" || position === "K") {
       setPlayerPosition("Kicker");
     }
   };
@@ -104,15 +138,64 @@ const PlayerList = ({
     filteredPlayersList.map((player, index) => {
       if (String(player.player_id) === draggedPlayer) {
         player.blocked = true;
-        handleSetDraggedPlayer();
+        console.log("BLOCKED PLAYER", player.blocked, player.full_name);
       }
+
       if (String(player.player_id) === removedPlayer) {
         player.blocked = false;
-        handleSetRemovedPlayer();
+        console.log("UNBLOCKED PLAYER", player.blocked, player.full_name);
       }
+      handleSetDraggedPlayer();
+      handleSetRemovedPlayer();
       return player;
     });
   };
+
+  //
+  useEffect(() => {
+    setFilteredPlayersList(
+      filterPlayers(players, "", activeRanksList?.position),
+    );
+    if (activeRanksList?.position === "QB") {
+      setPlayerPosition("Quarterback");
+    }
+    if (activeRanksList?.position === "RB") {
+      setPlayerPosition("Runningback");
+    }
+    if (activeRanksList?.position === "WR") {
+      setPlayerPosition("Wide Receiver");
+    }
+    if (activeRanksList?.position === "TE") {
+      setPlayerPosition("Tight End");
+    }
+    if (activeRanksList?.position === "FLEX") {
+      setPlayerPosition("Flex");
+      const flexPlayers = filterPlayers(players, "", "RB")
+        .concat(filterPlayers(players, "", "WR"))
+        .concat(filterPlayers(players, "", "TE"))
+        .sort((a, b) => {
+          if (a.search_rank > b.search_rank) {
+            return 1;
+          }
+          if (a.search_rank < b.search_rank) {
+            return -1;
+          }
+          return 0;
+        });
+      setFilteredPlayersList(flexPlayers);
+    }
+    if (activeRanksList?.position === "K") {
+      setPlayerPosition("Kicker");
+    }
+
+    // **** Uncomment***
+    // setHashedObj(hashIntoObject(filteredPlayersList));
+    // **** Uncomment***
+
+    handlePlayerPosition(null, activeRanksList?.position);
+
+    // blockPlayerFromList(activeRanksList?.positionRanks);
+  }, [activeRanksList]);
 
   useEffect(() => {
     handleDraggedPlayer(draggedPlayer, removedPlayer);
@@ -159,6 +242,8 @@ const PlayerList = ({
         {playerPosition}
         {filteredPlayersList.map((player, index) => {
           if (player.blocked === true) return null;
+          if (index < 5) return null;
+          // if (player.blocked) console.log(player.blocked, player.full_name);
           return (
             <div key={String(player.player_id)} className="flex gap-2 p-2">
               <PlayerCard

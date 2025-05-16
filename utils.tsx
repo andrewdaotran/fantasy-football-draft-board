@@ -6,6 +6,7 @@ export const filterPlayers = (
   players: APITypes[],
   playerName: string = "",
   filter: string = "QB",
+  filter2: string = "",
 ) => {
   const filteredPlayers = players
     .filter((player) => {
@@ -35,7 +36,7 @@ export const filterPlayers = (
         //   );
         // } else {
         return (
-          player.position === filter &&
+          (player.position === filter || player.position === filter2) &&
           player.depth_chart_order !== null &&
           player.status === "Active"
         );

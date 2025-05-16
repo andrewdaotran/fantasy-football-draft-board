@@ -5,6 +5,7 @@ import { api } from "~/trpc/server";
 
 import PlayerList from "../../_components/PlayerList";
 import DragAndDrop from "./DragAndDrop";
+import { filterPlayers } from "utils";
 // import PlayersContext, { PlayersContextType } from "~/context/playersContext";
 
 const getPlayers = async () => {
@@ -29,16 +30,18 @@ const Home = async () => {
   // Temp data until DB is setup
 
   positionRanksArray.push({
-    id: "0",
-    positionRanks: players.slice(0, 5),
+    id: "QB RANKS LIST",
+    // positionRanks: players.slice(0, 5),
+    positionRanks: filterPlayers(players, "", "QB").slice(0, 5),
     createdBy: "Andrew",
     position: "QB",
     title: "QB Ranks 2025",
   });
 
   positionRanksArray.push({
-    id: "4",
-    positionRanks: players.slice(13, 17),
+    id: "RB RANKS LIST",
+    // positionRanks: players.slice(13, 17),
+    positionRanks: filterPlayers(players, "", "RB").slice(0, 5),
     createdBy: "Andrew",
     position: "RB",
     title: "RB Ranks 2025",
